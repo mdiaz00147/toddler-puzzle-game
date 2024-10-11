@@ -24,10 +24,7 @@ export class Boot extends Scene {
     this.load.image('cloud-b', 'assets/clouds/cloud-computing.png')
     this.load.image('cloud-c', 'assets/clouds/cloud.png')
 
-    this.load.spritesheet('dude', 'assets/animal-pack/Spritesheet/round_nodetails_outline.png', {
-      frameWidth: 32,
-      frameHeight: 48
-    })
+    this.load.image('brick', 'assets/elements/brick.png')
   }
 
   create() {

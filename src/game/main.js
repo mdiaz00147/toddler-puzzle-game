@@ -17,7 +17,14 @@ const config = {
   height: clientHeight,
   parent: 'game-container',
   backgroundColor: '#028af8',
-  scene: [Boot, Preloader, MainMenu, Game, GameOver]
+  scene: [Boot, Preloader, MainMenu, Game, GameOver],
+  physics: {
+    default: 'arcade',
+    arcade: {
+      gravity: { y: 300 },
+      debug: false
+    }
+  }
 }
 
 const StartGame = (parent) => {
