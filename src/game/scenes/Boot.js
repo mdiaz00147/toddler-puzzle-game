@@ -21,7 +21,8 @@ export class Boot extends Scene {
     this.load.image('rabbit', 'assets/animal-pack/PNG/Round (outline)/rabbit.png')
     this.load.image('snake', 'assets/animal-pack/PNG/Round (outline)/snake.png')
 
-    this.load.svg('snakev', 'assets/animal-pack/Vector/round_nodetails.svg')
+    this.load.image('cloud-b', 'assets/clouds/cloud-computing.png')
+    this.load.image('cloud-c', 'assets/clouds/cloud.png')
 
     this.load.spritesheet('dude', 'assets/animal-pack/Spritesheet/round_nodetails_outline.png', {
       frameWidth: 32,
