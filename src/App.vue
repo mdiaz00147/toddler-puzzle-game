@@ -63,7 +63,7 @@ const currentScene = (scene) => {
 <template>
   <PhaserGame ref="phaserRef" @current-active-scene="currentScene" />
 
-  <div>
+  <!-- <div>
     <div>
       <button class="button" @click="changeScene">Change Scene</button>
     </div>
@@ -80,6 +80,6 @@ const currentScene = (scene) => {
     <div>
       <button class="button" @click="addSprite">Add New Sprite</button>
     </div>
-  </div>
+  </div> -->
 </template>
 

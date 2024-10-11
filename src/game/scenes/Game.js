@@ -4,66 +4,116 @@ import { Scene } from 'phaser'
 export class Game extends Scene {
   constructor() {
     super('Game')
+
+    this.emojies = ['🙉', '💩', '🚀', '😇', '🤩', '🥳']
   }
 
   preload() {
-    // this.load.image('background', 'assets/background.png')
-    const gradient = this.add.graphics()
-    gradient.fillGradientStyle(0x87cefa, 0x87cefa, 0x0000ff, 0x0000ff, 1)
-    gradient.fillRect(0, 0, this.cameras.main.width, this.cameras.main.height)
+    this.load.image('background', 'assets/background.png')
+
+    const brownSquare = this.add.graphics()
+    brownSquare.fillStyle(0x8b4513, 1) // Brown color
+    brownSquare
+      .fillRect(0, this.cameras.main.height - 100, this.cameras.main.width, 150)
+      .setDepth(0)
+
+    this.add
+      .text(
+        this.cameras.main.width / 2,
+        this.cameras.main.height - 50, // Adjusted to align vertically to the center of the square
+        'Arrastra los animales a sus posiciones !',
+        {
+          fontFamily: 'Arial',
+          fontSize: 24,
+          color: '#ffffff',
+          stroke: '#000000',
+          strokeThickness: 4,
+          align: 'center'
+        }
+      )
+      .setOrigin(0.5)
+      .setDepth(1)
   }
 
-  update(time, delta) {
-    // Game logic to be executed every frame
+  randomEmoji() {
+    return this.emojies[Math.floor(Math.random() * this.emojies.length)]
   }
 
-  pauseGame() {
-    // this.scene.pause()
-    // EventBus.emit('game-paused')
-  }
-
-  resumeGame() {
-    // this.scene.resume()
-    // EventBus.emit('game-resumed')
+  randomPosition() {
+    return {
+      x: Math.floor(Math.random() * (1024 - 100)),
+      y: Math.floor(Math.random() * (768 - 150))
+    }
   }
 
   create() {
-    const baseSquareInitialPosition = {
-      x: this.cameras.main.width / 2,
-      y: this.cameras.main.height / 2
+    const basePositionsShadows = {
+      giraffe: { x: 200, y: 179 },
+      elephant: { x: 500, y: 179 },
+      snake: { x: 800, y: 179 }
     }
 
-    this.add.rectangle(baseSquareInitialPosition.x, baseSquareInitialPosition.y, 300, 300, 0x808080)
-
-    const square = this.add
-      .rectangle(this.cameras.main.width, this.cameras.main.height, 300, 300, 0x00ff00)
+    const giraffeS = this.add
+      .image(basePositionsShadows.giraffe.x, basePositionsShadows.giraffe.y, 'giraffe')
+      .setScale(0.36)
       .setInteractive()
       .setDepth(1)
+    giraffeS.setTint(0x000) // Apply gray tint
+    giraffeS.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
 
-    console.log(square)
+    const elephantS = this.add
+      .image(basePositionsShadows.elephant.x, basePositionsShadows.elephant.y, 'elephant')
+      .setScale(0.36)
+      .setInteractive()
+      .setDepth(1)
+    elephantS.setTint(0x000) // Apply gray tint
+    elephantS.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
 
-    this.input.setDraggable(square)
+    const snakeS = this.add
+      .image(basePositionsShadows.snake.x, basePositionsShadows.snake.y, 'snake')
+      .setScale(0.36)
+      .setInteractive()
+      .setDepth(1)
+    snakeS.setTint(0x000) // Apply gray tint
+    snakeS.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
+
+    const giraffe = this.add
+      .image(this.randomPosition().x, this.randomPosition().y, 'giraffe')
+      .setScale(0.35)
+      .setInteractive()
+      .setDepth(2)
+    const elephant = this.add
+      .image(this.randomPosition().x, this.randomPosition().y, 'elephant')
+      .setScale(0.35)
+      .setInteractive()
+      .setDepth(2)
+    const snake = this.add
+      .image(this.randomPosition().x, this.randomPosition().y, 'snake')
+      .setScale(0.35)
+      .setInteractive()
+      .setDepth(2)
+
+    this.input.setDraggable([giraffe, elephant, snake])
 
     this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-      console.log(
-        `Dragging to x: ${Math.abs(gameObject.x - baseSquareInitialPosition.x) < 10}, y: ${Math.abs(gameObject.y - baseSquareInitialPosition.y) < 10}`
-      )
-
       gameObject.x = dragX
       gameObject.y = dragY
 
-      if (
-        Math.abs(gameObject.x - baseSquareInitialPosition.x) < 10 &&
-        Math.abs(gameObject.y - baseSquareInitialPosition.y) < 10
-      ) {
+      const isGiraffeOnBase =
+        Math.abs(giraffe.x - basePositionsShadows.giraffe.x) < 10 &&
+        Math.abs(giraffe.y - basePositionsShadows.giraffe.y) < 10
+
+      const isElephantOnBase =
+        Math.abs(elephant.x - basePositionsShadows.elephant.x) < 10 &&
+        Math.abs(elephant.y - basePositionsShadows.elephant.y) < 10
+
+      const issnakeOnBase =
+        Math.abs(snake.x - basePositionsShadows.snake.x) < 10 &&
+        Math.abs(snake.y - basePositionsShadows.snake.y) < 10
+
+      if (isGiraffeOnBase && isElephantOnBase && issnakeOnBase) {
         if (!this.label) {
-          this.label = this.add
-            .text(baseSquareInitialPosition.x, baseSquareInitialPosition.y - 50, 'Yeiii (:', {
-              fontSize: '32px',
-              fill: '#000'
-            })
-            .setOrigin(0.5)
-            .setDepth(2)
+          this.addCongratulationsText()
         }
       } else {
         if (this.label) {
@@ -72,6 +122,44 @@ export class Game extends Scene {
         }
       }
     })
+
+    // this.addCongratulationsText()
+  }
+
+  addCongratulationsText() {
+    this.label = this.add
+      .text(512, 384, `Felicitaciones Logan! ${this.randomEmoji()}`, {
+        fontFamily: 'Arial Black',
+        fontSize: 38,
+        color: '#ffffff',
+        stroke: '#000000',
+        strokeThickness: 8,
+        align: 'center'
+      })
+      .setOrigin(0.5)
+      .setDepth(3)
+
+    this.tweens.add({
+      targets: this.label,
+      scale: { from: 1, to: 2 },
+      duration: 1000,
+      ease: 'Power2',
+      yoyo: true,
+      onComplete: () => {
+        this.label.destroy()
+        this.label = null
+      }
+    })
+
+    // this.tweens.add({
+    //   targets: this.label,
+    //   x: { value: this.cameras.main.width, duration: 3000, ease: 'Back.easeInOut' },
+    //   y: { value: this.cameras.main.height, duration: 1500, ease: 'Sine.easeOut' },
+    //   duration: 20000,
+    //   ease: 'Power2',
+    //   yoyo: true,
+    //   repeat: -2
+    // })
   }
 
   changeScene() {

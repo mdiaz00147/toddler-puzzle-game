@@ -9,6 +9,8 @@ export class MainMenu extends Scene {
   }
 
   create() {
+    this.changeScene() // dev only
+
     this.add.image(512, 384, 'background')
 
     this.logo = this.add
@@ -41,10 +43,6 @@ export class MainMenu extends Scene {
       .setOrigin(0.5)
       .setInteractive() // Make the text interactive
       .on('pointerdown', () => {
-        // this.changeScene()
-        // this.moveLogo((position) => {
-        //   console.log('Logo position:', position)
-        // })
         this.changeScene()
       })
 
