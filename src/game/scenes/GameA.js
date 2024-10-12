@@ -17,14 +17,18 @@ export class GameA extends Scene {
   }
 
   preload() {
+    this.sWidth = this.cameras.main.width
+    this.sHeight = this.cameras.main.height
+    this.fontSize = Math.min(this.sWidth, this.sHeight) * 0.04 // Font size proportional to screen dimensions
     this.scoreBoard = this.add.text(16, 16, `SCORE: 0`, {
       fontSize: '32px',
       fill: '#000'
     })
-
-    this.sWidth = this.cameras.main.width
-    this.sHeight = this.cameras.main.height
-    this.fontSize = Math.min(this.sWidth, this.sHeight) * 0.04 // Font size proportional to screen dimensions
+    this.baseShades = {
+      animalA: { x: this.sWidth / 6, y: this.sHeight * 0.2 },
+      animalB: { x: this.sWidth / 2, y: this.sHeight * 0.2 },
+      animalC: { x: (this.sWidth / 6) * 5, y: this.sHeight * 0.2 }
+    }
 
     const brownSquare = this.add.graphics()
     brownSquare
@@ -57,23 +61,32 @@ export class GameA extends Scene {
   }
 
   create() {
+    console.log('create')
+    this.start()
     this.addBirds()
     this.addClouds()
-    this.start()
   }
 
   start() {
-    const baseShades = {
-      animalA: { x: this.sWidth / 6, y: this.sHeight * 0.2 },
-      animalB: { x: this.sWidth / 2, y: this.sHeight * 0.2 },
-      animalC: { x: (this.sWidth / 6) * 5, y: this.sHeight * 0.2 }
-    }
+    console.log('start')
 
-    const shuffledAnimals = this.shuffledAnimals()
+    const availableAnimals = [
+      'elephant',
+      'giraffe',
+      'hippo',
+      'monkey',
+      'panda',
+      'parrot',
+      'penguin',
+      'pig',
+      'rabbit',
+      'snake'
+    ]
+    const shuffledAnimals = availableAnimals.sort(() => Math.random() - 0.5).slice(0, 3)
     const [animalAKey, animalBKey, animalCKey] = shuffledAnimals
 
-    this.addAnimalsShadow(baseShades, animalAKey, animalBKey, animalCKey)
-    this.addAnimals(baseShades, animalAKey, animalBKey, animalCKey)
+    this.addAnimalsShadow(animalAKey, animalBKey, animalCKey)
+    this.addAnimals(animalAKey, animalBKey, animalCKey)
   }
 
   randomEmoji() {
@@ -169,30 +182,13 @@ export class GameA extends Scene {
     }
   }
 
-  shuffledAnimals() {
-    const availableAnimals = [
-      'elephant',
-      'giraffe',
-      'hippo',
-      'monkey',
-      'panda',
-      'parrot',
-      'penguin',
-      'pig',
-      'rabbit',
-      'snake'
-    ]
-
-    return Phaser.Utils.Array.Shuffle(availableAnimals).slice(0, 3)
-  }
-
-  addAnimalsShadow(baseShades, animalAKey, animalBKey, animalCKey) {
+  addAnimalsShadow(animalAKey, animalBKey, animalCKey) {
     this.animalsShadows = this.add.group()
 
     const scaleSizeShadow = Math.min(this.sWidth, this.sHeight) * 0.00071 // Scale size proportional to screen dimensions
 
     this.animalAShadow = this.add
-      .image(baseShades.animalA.x, baseShades.animalA.y, animalAKey)
+      .image(this.baseShades.animalA.x, this.baseShades.animalA.y, animalAKey)
       .setScale(scaleSizeShadow)
       .setInteractive()
       .setDepth(1)
@@ -200,7 +196,7 @@ export class GameA extends Scene {
     this.animalAShadow.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
 
     this.animalBShadow = this.add
-      .image(baseShades.animalB.x, baseShades.animalB.y, animalBKey)
+      .image(this.baseShades.animalB.x, this.baseShades.animalB.y, animalBKey)
       .setScale(scaleSizeShadow)
       .setInteractive()
       .setDepth(1)
@@ -208,50 +204,25 @@ export class GameA extends Scene {
     this.animalBShadow.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
 
     this.animalCShadow = this.add
-      .image(baseShades.animalC.x, baseShades.animalC.y, animalCKey)
+      .image(this.baseShades.animalC.x, this.baseShades.animalC.y, animalCKey)
       .setScale(scaleSizeShadow)
       .setInteractive()
       .setDepth(1)
     this.animalCShadow.setTint(0x000) // Apply gray tint
     this.animalCShadow.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
 
-    this.animalsShadows.add(this.animalAShadow)
-    this.animalsShadows.add(this.animalBShadow)
-    this.animalsShadows.add(this.animalCShadow)
+    this.animalsShadows.addMultiple([this.animalAShadow, this.animalBShadow, this.animalCShadow])
   }
 
-  addAnimals(baseShades, animalAKey, animalBKey, animalCKey) {
+  addAnimals(animalAKey, animalBKey, animalCKey) {
     this.animals = this.add.group()
 
     const scaleSize = Math.min(this.sWidth, this.sHeight) * 0.0007 // Scale size proportional to screen dimensions
 
     const createAnimal = (key) => {
-      let animal
-      let isOverlapping
       const x = Math.random() * this.sWidth
       const y = Math.random() * this.sHeight
-
-      do {
-        isOverlapping = false
-
-        animal = this.add.image(x, y, key).setScale(scaleSize).setInteractive().setDepth(2)
-
-        // Check for overlap with existing animals
-        this.animals.getChildren().forEach((existingAnimal) => {
-          const distance = Phaser.Math.Distance.Between(
-            animal.x,
-            animal.y,
-            existingAnimal.x,
-            existingAnimal.y
-          )
-          if (distance < animal.width * scaleSize * 1.1) {
-            // 10% distance
-            isOverlapping = true
-            animal.destroy()
-          }
-        })
-      } while (isOverlapping)
-
+      const animal = this.add.image(x, y, key).setScale(scaleSize).setInteractive().setDepth(2)
       this.animals.add(animal)
       return animal
     }
@@ -266,16 +237,16 @@ export class GameA extends Scene {
       gameObject.x = dragX
       gameObject.y = dragY
 
-      const isAnimalAOnBase = this.isAnimalOnBase('animalA', baseShades)
-      const isAnimalBOnBase = this.isAnimalOnBase('animalB', baseShades)
-      const isAnimalCOnBase = this.isAnimalOnBase('animalC', baseShades)
+      const isAnimalAOnBase = this.isAnimalOnBase('animalA')
+      const isAnimalBOnBase = this.isAnimalOnBase('animalB')
+      const isAnimalCOnBase = this.isAnimalOnBase('animalC')
 
       if (isAnimalAOnBase && isAnimalBOnBase && isAnimalCOnBase) {
-        this.score++
-        this.scoreBoard.setText(`SCORE: ${this.score}`)
+        // this.score++
+        // this.scoreBoard.setText(`SCORE: ${this.score}`)
 
         if (!this.label) {
-          this.addCongratulationsText(baseShades, scaleSize)
+          this.addCongratulationsText(scaleSize)
         }
       } else {
         if (this.label) {
@@ -287,12 +258,12 @@ export class GameA extends Scene {
     })
   }
 
-  isAnimalOnBase(animal, baseShades) {
+  isAnimalOnBase(animal) {
     const scaleSizeShadowOnBase = Math.min(this.sWidth, this.sHeight) * 0.00073 // Scale size proportional to screen dimensions
     const scaleSizeShadow = Math.min(this.sWidth, this.sHeight) * 0.00071 // Scale size proportional to screen dimensions
     const isOnBase =
-      Math.abs(this[animal].x - baseShades[animal].x) < 10 &&
-      Math.abs(this[animal].y - baseShades[animal].y) < 10
+      Math.abs(this[animal].x - this.baseShades[animal].x) < 10 &&
+      Math.abs(this[animal].y - this.baseShades[animal].y) < 10
 
     if (isOnBase) {
       this[`${animal}Shadow`].setTint(0x00ff00)
@@ -321,7 +292,7 @@ export class GameA extends Scene {
     this.addClouds()
   }
 
-  addCongratulationsText(baseShades, scaleSize) {
+  addCongratulationsText(scaleSize) {
     this.label = this.add
       .text(
         this.sWidth / 2,
@@ -352,7 +323,7 @@ export class GameA extends Scene {
         this.label.destroy()
         this.label = null
 
-        this.resetAnimals(baseShades, scaleSize)
+        this.resetAnimals(scaleSize)
         this.resetClouds()
       }
     })
