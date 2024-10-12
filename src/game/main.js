@@ -1,5 +1,6 @@
 import { Boot } from './scenes/Boot'
-import { Game } from './scenes/Game'
+import { GameA } from './scenes/GameA'
+import { GameB } from './scenes/GameB'
 import { GameOver } from './scenes/GameOver'
 import { MainMenu } from './scenes/MainMenu'
 import Phaser from 'phaser'
@@ -17,7 +18,7 @@ const config = {
   height: clientHeight,
   parent: 'game-container',
   backgroundColor: '#028af8',
-  scene: [Boot, Preloader, MainMenu, Game, GameOver],
+  scene: [Boot, Preloader, MainMenu, GameA, GameB, GameOver],
   physics: {
     default: 'arcade',
     arcade: {

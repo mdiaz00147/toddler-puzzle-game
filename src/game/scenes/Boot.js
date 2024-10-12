@@ -24,7 +24,14 @@ export class Boot extends Scene {
     this.load.image('cloud-b', 'assets/clouds/cloud-computing.png')
     this.load.image('cloud-c', 'assets/clouds/cloud.png')
 
+    this.load.image('sky', 'assets/elements/sky.png')
+    this.load.image('ground', 'assets/elements/platform.png')
+    this.load.image('star', 'assets/elements/star.png')
+    this.load.image('bomb', 'assets/elements/bomb.png')
     this.load.image('brick', 'assets/elements/brick.png')
+
+    this.load.image('frameA', 'assets/crateboy/_ART/birds/spr_bird1_0.png')
+    this.load.image('frameB', 'assets/crateboy/_ART/birds/spr_bird1_1.png')
   }
 
   create() {
