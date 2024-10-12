@@ -15,7 +15,7 @@ export class MainMenu extends Scene {
   }
 
   create() {
-    // this.changeScene('GameA') // dev only
+    this.changeScene('GameA') // dev only
 
     this.add
       .image(this.sWidth / 2, this.sHeight / 2, 'background')
