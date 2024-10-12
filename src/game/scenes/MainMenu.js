@@ -39,21 +39,21 @@ export class MainMenu extends Scene {
         this.changeScene('GameA')
       })
 
-    this.add
-      .text(this.sWidth / 2, this.sHeight / 2 + 500, 'Empezar Game B!', {
-        fontFamily: 'Arial Black',
-        fontSize: this.fontSize,
-        color: '#ffffff',
-        stroke: '#000000',
-        strokeThickness: 8,
-        align: 'center'
-      })
-      .setDepth(100)
-      .setOrigin(0.5)
-      .setInteractive() // Make the text interactive
-      .on('pointerdown', () => {
-        this.changeScene('GameB')
-      })
+    // this.add
+    //   .text(this.sWidth / 2, this.sHeight / 2 + 500, 'Empezar Game B!', {
+    //     fontFamily: 'Arial Black',
+    //     fontSize: this.fontSize,
+    //     color: '#ffffff',
+    //     stroke: '#000000',
+    //     strokeThickness: 8,
+    //     align: 'center'
+    //   })
+    //   .setDepth(100)
+    //   .setOrigin(0.5)
+    //   .setInteractive() // Make the text interactive
+    //   .on('pointerdown', () => {
+    //     this.changeScene('GameB')
+    //   })
 
     EventBus.emit('current-scene-ready', this)
   }
