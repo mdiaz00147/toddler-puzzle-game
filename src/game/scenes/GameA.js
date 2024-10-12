@@ -2,18 +2,26 @@ import { EventBus } from '../EventBus'
 import { Scene } from 'phaser'
 
 const NUM_OF_CLOUDS = 10
-export class Game extends Scene {
+const NUM_OF_BIRDS = 2
+
+export class GameA extends Scene {
   constructor() {
-    super('Game')
+    super('GameA')
 
     this.emojies = ['🙉', '💩', '🚀', '😇', '🤩', '🥳']
     this.label = null
     this.clouds = null
     this.animals = null
     this.animalsShadows = null
+    this.score = 0
   }
 
   preload() {
+    this.scoreBoard = this.add.text(16, 16, `SCORE: 0`, {
+      fontSize: '32px',
+      fill: '#000'
+    })
+
     this.sWidth = this.cameras.main.width
     this.sHeight = this.cameras.main.height
     this.fontSize = Math.min(this.sWidth, this.sHeight) * 0.04 // Font size proportional to screen dimensions
@@ -49,6 +57,7 @@ export class Game extends Scene {
   }
 
   create() {
+    this.addBirds()
     this.addClouds()
     this.start()
   }
@@ -76,6 +85,39 @@ export class Game extends Scene {
     return {
       x: Math.floor(Math.random() * (this.sWidth - 100)),
       y: Math.floor(Math.random() * (this.sHeight - 150))
+    }
+  }
+
+  addBirds() {
+    for (let i = 0; i < NUM_OF_BIRDS; i++) {
+      const x = Math.random() * this.sWidth
+      const y = Math.random() * this.sHeight * 0.4
+      const mySprite = this.add.sprite(x, y, 'frameA').setScale(2.5).setDepth(1)
+
+      this.anims.create({
+        key: 'bird', // Animation key
+        frames: [
+          { key: 'frameA' }, // Frame 1
+          { key: 'frameB' } // Frame 2
+        ],
+        frameRate: 3, // Number of frames per second (adjust this)
+        repeat: -1 // Loop the animation indefinitely
+      })
+
+      mySprite.play('bird', true)
+
+      let yValue = '-=500'
+      let xValue = '+=500'
+
+      this.tweens.add({
+        targets: mySprite,
+        x: xValue,
+        repeat: -1,
+        duration: 6000,
+        ease: 'Power1',
+        yoyo: true,
+        flipX: true
+      })
     }
   }
 
@@ -153,33 +195,33 @@ export class Game extends Scene {
 
     const scaleSizeShadow = Math.min(this.sWidth, this.sHeight) * 0.00071 // Scale size proportional to screen dimensions
 
-    const animalA = this.add
+    this.animalAShadow = this.add
       .image(basePositionsShadows.animalA.x, basePositionsShadows.animalA.y, animalAKey)
       .setScale(scaleSizeShadow)
       .setInteractive()
       .setDepth(1)
-    animalA.setTint(0x000) // Apply gray tint
-    animalA.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
+    this.animalAShadow.setTint(0x000) // Apply gray tint
+    this.animalAShadow.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
 
-    const animalB = this.add
+    this.animalBShadow = this.add
       .image(basePositionsShadows.animalB.x, basePositionsShadows.animalB.y, animalBKey)
       .setScale(scaleSizeShadow)
       .setInteractive()
       .setDepth(1)
-    animalB.setTint(0x000) // Apply gray tint
-    animalB.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
+    this.animalBShadow.setTint(0x000) // Apply gray tint
+    this.animalBShadow.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
 
-    const animalC = this.add
+    this.animalCShadow = this.add
       .image(basePositionsShadows.animalC.x, basePositionsShadows.animalC.y, animalCKey)
       .setScale(scaleSizeShadow)
       .setInteractive()
       .setDepth(1)
-    animalC.setTint(0x000) // Apply gray tint
-    animalC.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
+    this.animalCShadow.setTint(0x000) // Apply gray tint
+    this.animalCShadow.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
 
-    this.animalsShadows.add(animalA)
-    this.animalsShadows.add(animalB)
-    this.animalsShadows.add(animalC)
+    this.animalsShadows.add(this.animalAShadow)
+    this.animalsShadows.add(this.animalBShadow)
+    this.animalsShadows.add(this.animalCShadow)
   }
 
   addAnimals(basePositionsShadows, scaleSize, animalAKey, animalBKey, animalCKey) {
@@ -228,11 +270,11 @@ export class Game extends Scene {
       gameObject.x = dragX
       gameObject.y = dragY
 
-      const isGiraffeOnBase =
+      const isAnimalAOnBase =
         Math.abs(this.animalA.x - basePositionsShadows.animalA.x) < 10 &&
         Math.abs(this.animalA.y - basePositionsShadows.animalA.y) < 10
 
-      const isElephantOnBase =
+      const isAnimalBOnBase =
         Math.abs(this.animalB.x - basePositionsShadows.animalB.x) < 10 &&
         Math.abs(this.animalB.y - basePositionsShadows.animalB.y) < 10
 
@@ -240,9 +282,14 @@ export class Game extends Scene {
         Math.abs(this.animalC.x - basePositionsShadows.animalC.x) < 10 &&
         Math.abs(this.animalC.y - basePositionsShadows.animalC.y) < 10
 
-      console.log('winning', isGiraffeOnBase, isElephantOnBase, isanimalCOnBase)
+      this.isAnimalOnBase('animalAShadow', isAnimalAOnBase)
+      this.isAnimalOnBase('animalBShadow', isAnimalBOnBase)
+      this.isAnimalOnBase('animalCShadow', isanimalCOnBase)
 
-      if (isGiraffeOnBase && isElephantOnBase && isanimalCOnBase) {
+      if (isAnimalAOnBase && isAnimalBOnBase && isanimalCOnBase) {
+        this.score++
+        this.scoreBoard.setText(`SCORE: ${this.score}`)
+
         if (!this.label) {
           this.addCongratulationsText(basePositionsShadows, scaleSize)
         }
@@ -254,6 +301,22 @@ export class Game extends Scene {
         }
       }
     })
+  }
+
+  isAnimalOnBase(animal, isOnBase) {
+    const scaleSizeShadowOnBase = Math.min(this.sWidth, this.sHeight) * 0.00073 // Scale size proportional to screen dimensions
+    const scaleSizeShadow = Math.min(this.sWidth, this.sHeight) * 0.00071 // Scale size proportional to screen dimensions
+
+    if (isOnBase) {
+      this[animal].setTint(0x00ff00)
+      this[animal].setTintFill(0x00ff00)
+      this[animal].setAlpha(1)
+      this[animal].setScale(scaleSizeShadowOnBase)
+    } else {
+      this[animal].setTint(0x000)
+      this[animal].setAlpha(0.7)
+      this[animal].setScale(scaleSizeShadow)
+    }
   }
 
   resetAnimals(basePositionsShadows, scaleSize) {
