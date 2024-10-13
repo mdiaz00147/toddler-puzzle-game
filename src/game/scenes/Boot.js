@@ -32,6 +32,7 @@ export class Boot extends Scene {
 
     this.load.image('frameA', 'assets/crateboy/_ART/birds/spr_bird1_0.png')
     this.load.image('frameB', 'assets/crateboy/_ART/birds/spr_bird1_1.png')
+    this.load.image('wall', 'assets/crateboy/_ART/Wall tiles/wall3.png')
   }
 
   create() {
