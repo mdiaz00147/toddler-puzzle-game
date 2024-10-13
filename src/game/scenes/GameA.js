@@ -242,9 +242,6 @@ export class GameA extends Scene {
       const isAnimalCOnBase = this.isAnimalOnBase('animalC')
 
       if (isAnimalAOnBase && isAnimalBOnBase && isAnimalCOnBase) {
-        // this.score++
-        // this.scoreBoard.setText(`SCORE: ${this.score}`)
-
         if (!this.label) {
           this.addCongratulationsText(scaleSize)
         }
@@ -293,6 +290,9 @@ export class GameA extends Scene {
   }
 
   addCongratulationsText(scaleSize) {
+    this.score++
+    this.scoreBoard.setText(`SCORE: ${this.score}`)
+
     this.label = this.add
       .text(
         this.sWidth / 2,
