@@ -30,18 +30,11 @@ export class GameA extends Scene {
       animalC: { x: (this.sWidth / 6) * 5, y: this.sHeight * 0.2 }
     }
 
-    const brownSquare = this.add.graphics()
-    brownSquare
-      .fillStyle(0x8b4513, 1)
-      .fillRect(0, this.sHeight - this.sHeight * 0.1, this.sWidth, this.sHeight * 0.1)
-      .setDepth(0)
-
     const brickBase = this.add
       .image(0, this.sHeight, 'brick')
       .setScale(0.1)
       .setOrigin(0, 1)
       .setDepth(0)
-
     const brickWidth = brickBase.width * brickBase.scaleX
     const brickHeight = brickBase.height * brickBase.scaleY
     const numBricks = Math.ceil(this.sWidth / brickWidth)
@@ -192,24 +185,24 @@ export class GameA extends Scene {
       .setScale(scaleSizeShadow)
       .setInteractive()
       .setDepth(1)
-    this.animalAShadow.setTint(0x000) // Apply gray tint
-    this.animalAShadow.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
+    this.animalAShadow.setTint(0x000)
+    this.animalAShadow.setAlpha(0.7)
 
     this.animalBShadow = this.add
       .image(this.baseShades.animalB.x, this.baseShades.animalB.y, animalBKey)
       .setScale(scaleSizeShadow)
       .setInteractive()
       .setDepth(1)
-    this.animalBShadow.setTint(0x000) // Apply gray tint
-    this.animalBShadow.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
+    this.animalBShadow.setTint(0x000)
+    this.animalBShadow.setAlpha(0.7)
 
     this.animalCShadow = this.add
       .image(this.baseShades.animalC.x, this.baseShades.animalC.y, animalCKey)
       .setScale(scaleSizeShadow)
       .setInteractive()
       .setDepth(1)
-    this.animalCShadow.setTint(0x000) // Apply gray tint
-    this.animalCShadow.setAlpha(0.7) // Make the image semi-transparent to emphasize the silhouette
+    this.animalCShadow.setTint(0x000)
+    this.animalCShadow.setAlpha(0.7)
 
     this.animalsShadows.addMultiple([this.animalAShadow, this.animalBShadow, this.animalCShadow])
   }
