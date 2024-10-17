@@ -20,10 +20,12 @@ export class GameA extends Scene {
     this.sWidth = this.cameras.main.width
     this.sHeight = this.cameras.main.height
     this.fontSize = Math.min(this.sWidth, this.sHeight) * 0.04 // Font size proportional to screen dimensions
-    this.scoreBoard = this.add.text(16, 16, `SCORE: 0`, {
-      fontSize: '32px',
-      fill: '#000'
-    })
+    this.scoreBoard = this.add
+      .text(16, 16, `SCORE: 0`, {
+        fontSize: '32px',
+        fill: '#000'
+      })
+      .setDepth(3)
     this.baseShades = {
       animalA: { x: this.sWidth / 6, y: this.sHeight * 0.2 },
       animalB: { x: this.sWidth / 2, y: this.sHeight * 0.2 },
@@ -213,10 +215,20 @@ export class GameA extends Scene {
     const scaleSize = Math.min(this.sWidth, this.sHeight) * 0.0007 // Scale size proportional to screen dimensions
 
     const createAnimal = (key) => {
-      const x = Math.random() * this.sWidth
-      const y = Math.random() * this.sHeight
-      const animal = this.add.image(x, y, key).setScale(scaleSize).setInteractive().setDepth(2)
+      const animal = this.add.image(0, 0, key).setScale(scaleSize).setInteractive().setDepth(2)
+      animal.x = Phaser.Math.Clamp(
+        Math.random() * this.sWidth,
+        animal.displayWidth / 2,
+        this.sWidth - animal.displayWidth / 2
+      )
+      animal.y = Phaser.Math.Clamp(
+        Math.random() * this.sHeight,
+        animal.displayHeight / 2,
+        this.sHeight - animal.displayHeight / 2
+      )
+
       this.animals.add(animal)
+
       return animal
     }
 
@@ -227,6 +239,18 @@ export class GameA extends Scene {
     this.input.setDraggable([this.animalA, this.animalB, this.animalC])
 
     this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+      console.log('drag', this.sWidth)
+      dragX = Phaser.Math.Clamp(
+        dragX,
+        gameObject.displayWidth / 2,
+        this.sWidth - gameObject.displayWidth / 2
+      )
+      dragY = Phaser.Math.Clamp(
+        dragY,
+        gameObject.displayHeight / 2,
+        this.sHeight - gameObject.displayHeight / 2
+      )
+
       gameObject.x = dragX
       gameObject.y = dragY
 
