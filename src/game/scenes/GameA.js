@@ -16,7 +16,7 @@ export class GameA extends Scene {
     this.animalsNames = {}
     this.animalsShadows = null
     this.animalLabelObj = null
-    this.animalsOnBase = []
+    this.animalsOnBase = new Set()
     this.score = 0
   }
 
@@ -55,7 +55,8 @@ export class GameA extends Scene {
   }
 
   addAnimalLabel(animal) {
-    if (this.animalsOnBase.includes(animal)) {
+    // console.log('addAnimalLabel', this.animalsOnBase)
+    if (this.animalsOnBase.has(animal)) {
       return
     }
 
@@ -347,17 +348,15 @@ export class GameA extends Scene {
 
       this.addAnimalLabel(this.animalsNames[animal])
 
-      this.animalsOnBase.push(this.animalsNames[animal])
+      this.animalsOnBase.add(this.animalsNames[animal])
     } else {
       this[`${animal}Shadow`].setTint(0x000)
       this[`${animal}Shadow`].setAlpha(0.7)
       this[`${animal}Shadow`].setScale(scaleSizeShadow)
 
-      const index = this.animalsOnBase.indexOf(this.animalsNames[animal])
-
-      if (index > -1) {
-        this.animalsOnBase.splice(index, 1)
-      }
+      // setTimeout(() => {
+      this.animalsOnBase.delete(this.animalsNames[animal])
+      // }, 2000)
     }
 
     return isOnBase
@@ -383,10 +382,6 @@ export class GameA extends Scene {
   }
 
   addCongratulationsText(scaleSize) {
-    if (this.animalLabelObj) {
-      // this.animalLabelObj.setVisible(false)
-    }
-
     this.label = this.add
       .text(
         this.sWidth / 2,
@@ -418,7 +413,7 @@ export class GameA extends Scene {
         this.scoreBoard.text = `SCORE: ${this.score}`
         this.label.destroy()
         this.label = null
-        this.addAnimalLabel.text = ''
+        this.animalLabelObj.text = ''
 
         this.resetAnimals(scaleSize)
         this.resetClouds()
