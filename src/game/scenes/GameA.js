@@ -8,24 +8,23 @@ export class GameA extends Scene {
   constructor() {
     super('GameA')
 
-    this.emojies = ['🙉', '💩', '🚀', '😇', '🤩', '🥳']
+    this.emojies = ['🙉', '💩', '🚀', '😇', '🤩', '🥳', '🎸', '🎉', '🤓', '😬']
     this.label = null
     this.clouds = null
     this.animals = null
+    this.birds = null
+    this.animalsNames = {}
     this.animalsShadows = null
+    this.animalLabelObj = null
+    this.animalsOnBase = []
     this.score = 0
   }
 
   preload() {
+    this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
     this.sWidth = this.cameras.main.width
     this.sHeight = this.cameras.main.height
     this.fontSize = Math.min(this.sWidth, this.sHeight) * 0.04 // Font size proportional to screen dimensions
-    this.scoreBoard = this.add
-      .text(16, 16, `SCORE: 0`, {
-        fontSize: '32px',
-        fill: '#000'
-      })
-      .setDepth(3)
     this.baseShades = {
       animalA: { x: this.sWidth / 6, y: this.sHeight * 0.2 },
       animalB: { x: this.sWidth / 2, y: this.sHeight * 0.2 },
@@ -55,11 +54,66 @@ export class GameA extends Scene {
     }
   }
 
+  addAnimalLabel(animal) {
+    if (this.animalsOnBase.includes(animal)) {
+      return
+    }
+
+    if (this.animalLabelObj) {
+      this.animalLabelObj.text = ''
+    }
+
+    const x = this.sWidth / 2
+    const y = this.sHeight * 0.6
+
+    const textConfig = {
+      fontFamily: 'Bruno Ace SC',
+      fontSize: 80,
+      color: '#ffffff'
+    }
+
+    this.animalLabelObj = this.add.text(0, y, animal, textConfig)
+    this.animalLabelObj.x = x - this.animalLabelObj.displayWidth / 2
+    this.animalLabelObj.text = ''
+
+    let index = 0
+
+    this.time.addEvent({
+      delay: 200,
+      callback: () => {
+        this.animalLabelObj.text += animal[index]
+        index++
+
+        if (index === animal.length) {
+          this.time.removeAllEvents()
+        }
+      },
+      loop: true
+    })
+  }
+
   create() {
     console.log('create')
     this.start()
     this.addBirds()
     this.addClouds()
+
+    // this.addCongratulationsText()
+
+    WebFont.load({
+      google: {
+        families: ['Bruno Ace SC']
+      },
+      active: () => {
+        this.scoreBoard = this.add
+          .text(16, 16, `SCORE: 0`, {
+            fontFamily: 'Bruno Ace SC',
+            fontSize: '30px',
+            fill: '#000000' // Same yellow color as the congratulations text
+          })
+          .setDepth(3)
+      }
+    })
   }
 
   start() {
@@ -80,6 +134,8 @@ export class GameA extends Scene {
     const shuffledAnimals = availableAnimals.sort(() => Math.random() - 0.5).slice(0, 3)
     const [animalAKey, animalBKey, animalCKey] = shuffledAnimals
 
+    this.animalsNames = { animalA: animalAKey, animalB: animalBKey, animalC: animalCKey }
+
     this.addAnimalsShadow(animalAKey, animalBKey, animalCKey)
     this.addAnimals(animalAKey, animalBKey, animalCKey)
   }
@@ -96,13 +152,14 @@ export class GameA extends Scene {
   }
 
   addBirds() {
+    this.birds = this.add.group()
+
     this.anims.create({
       key: 'bird',
       frames: [{ key: 'frameA' }, { key: 'frameB' }],
       frameRate: 3,
       repeat: -1
     })
-
     for (let i = 0; i < NUM_OF_BIRDS; i++) {
       const x = Math.random() * this.sWidth
       const y = Math.random() * this.sHeight * 0.4
@@ -122,6 +179,8 @@ export class GameA extends Scene {
         yoyo: true,
         flipX: true
       })
+
+      this.birds.add(mySprite)
     }
   }
 
@@ -239,7 +298,6 @@ export class GameA extends Scene {
     this.input.setDraggable([this.animalA, this.animalB, this.animalC])
 
     this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-      console.log('drag', this.sWidth)
       dragX = Phaser.Math.Clamp(
         dragX,
         gameObject.displayWidth / 2,
@@ -258,17 +316,19 @@ export class GameA extends Scene {
       const isAnimalBOnBase = this.isAnimalOnBase('animalB')
       const isAnimalCOnBase = this.isAnimalOnBase('animalC')
 
-      if (isAnimalAOnBase && isAnimalBOnBase && isAnimalCOnBase) {
-        if (!this.label) {
-          this.addCongratulationsText(scaleSize)
+      this.input.on('dragend', () => {
+        if (isAnimalAOnBase && isAnimalBOnBase && isAnimalCOnBase) {
+          if (!this.label) {
+            this.addCongratulationsText(scaleSize)
+          }
+        } else {
+          if (this.label) {
+            this.label.destroy()
+            this.tweens.killTweensOf(this.label)
+            this.label = null
+          }
         }
-      } else {
-        if (this.label) {
-          this.label.destroy()
-          this.tweens.killTweensOf(this.label)
-          this.label = null
-        }
-      }
+      })
     })
   }
 
@@ -284,10 +344,20 @@ export class GameA extends Scene {
       this[`${animal}Shadow`].setTintFill(0x00ff00)
       this[`${animal}Shadow`].setAlpha(1)
       this[`${animal}Shadow`].setScale(scaleSizeShadowOnBase)
+
+      this.addAnimalLabel(this.animalsNames[animal])
+
+      this.animalsOnBase.push(this.animalsNames[animal])
     } else {
       this[`${animal}Shadow`].setTint(0x000)
       this[`${animal}Shadow`].setAlpha(0.7)
       this[`${animal}Shadow`].setScale(scaleSizeShadow)
+
+      const index = this.animalsOnBase.indexOf(this.animalsNames[animal])
+
+      if (index > -1) {
+        this.animalsOnBase.splice(index, 1)
+      }
     }
 
     return isOnBase
@@ -306,21 +376,28 @@ export class GameA extends Scene {
     this.addClouds()
   }
 
+  resetBirds() {
+    this.birds.clear(true, true)
+
+    this.addBirds()
+  }
+
   addCongratulationsText(scaleSize) {
-    this.score++
-    this.scoreBoard.setText(`SCORE: ${this.score}`)
+    if (this.animalLabelObj) {
+      // this.animalLabelObj.setVisible(false)
+    }
 
     this.label = this.add
       .text(
         this.sWidth / 2,
         this.sHeight - this.sHeight / 4,
-        `Felicitaciones Logan!\n${this.randomEmoji()}`,
+        `Ganaste Logan!\n${this.randomEmoji()}`,
         {
-          fontFamily: 'Comic Sans MS, Comic Sans, cursive', // Changed font family to a cooler one
+          fontFamily: 'Bruno Ace SC',
           fontSize: `${this.fontSize}px`,
-          color: '#ffffff',
+          color: '#ffcc00', // A color that combines well with a typical game background
           stroke: '#000000',
-          strokeThickness: 4,
+          strokeThickness: 20,
           align: 'center'
         }
       )
@@ -329,19 +406,23 @@ export class GameA extends Scene {
 
     this.tweens.add({
       targets: this.label,
-      scale: { from: 1, to: 1.2 },
-      duration: 1000,
+      scale: { from: 1, to: 1.4 },
+      duration: 2000,
       ease: 'Power2',
       yoyo: true,
       onUpdate: () => {
         this.label.setFontSize(`${this.fontSize * this.label.scaleX}px`)
       },
       onComplete: () => {
+        this.score++
+        this.scoreBoard.text = `SCORE: ${this.score}`
         this.label.destroy()
         this.label = null
+        this.addAnimalLabel.text = ''
 
         this.resetAnimals(scaleSize)
         this.resetClouds()
+        this.resetBirds()
       }
     })
   }
