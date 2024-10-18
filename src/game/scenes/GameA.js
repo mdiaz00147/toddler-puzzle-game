@@ -152,10 +152,6 @@ export class GameA extends Scene {
     this.addAnimals(shuffledAnimals)
   }
 
-  randomEmoji() {
-    return this.emojies[Math.floor(Math.random() * this.emojies.length)]
-  }
-
   randomPosition() {
     return {
       x: Math.floor(Math.random() * (this.sWidth - 100)),
@@ -386,20 +382,17 @@ export class GameA extends Scene {
   }
 
   addCongratulationsText(scaleSize) {
+    const emoji = this.emojies[Math.floor(Math.random() * this.emojies.length)]
+
     this.label = this.add
-      .text(
-        this.sWidth / 2,
-        this.sHeight - this.sHeight / 4,
-        `Ganaste Logan!\n${this.randomEmoji()}`,
-        {
-          fontFamily: 'Bruno Ace SC',
-          fontSize: `${this.fontSize}px`,
-          color: '#ffcc00', // A color that combines well with a typical game background
-          stroke: '#000000',
-          strokeThickness: 20,
-          align: 'center'
-        }
-      )
+      .text(this.sWidth / 2, this.sHeight - this.sHeight / 4, `Ganaste Logan!\n${emoji}`, {
+        fontFamily: 'Bruno Ace SC',
+        fontSize: `${this.fontSize}px`,
+        color: '#ffcc00', // A color that combines well with a typical game background
+        stroke: '#000000',
+        strokeThickness: 20,
+        align: 'center'
+      })
       .setOrigin(0.5)
       .setDepth(3)
 
