@@ -300,16 +300,18 @@ export class GameA extends Scene {
     }
 
     const animalObjects = animals.map(createAnimal)
-    const animalsOnBase = new Set()
+    let animalDragged = null
 
     this.input.setDraggable(animalObjects)
     this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
-      // console.log('gameObject', gameObject.name)
+      animalDragged = this.animalsNames[gameObject.name]
+
       dragX = Phaser.Math.Clamp(
         dragX,
         gameObject.displayWidth / 2,
         this.sWidth - gameObject.displayWidth / 2
       )
+
       dragY = Phaser.Math.Clamp(
         dragY,
         gameObject.displayHeight / 2,
@@ -319,34 +321,32 @@ export class GameA extends Scene {
       gameObject.x = dragX
       gameObject.y = dragY
 
-      for (let index = 0; index < animalObjects.length; index++) {
-        const isOnBase = this.isAnimalOnBase(gameObject.name)
+      this.isAnimalOnBase(gameObject.name)
+    })
 
-        if (isOnBase) animalsOnBase.add(gameObject.name)
+    this.input.on('dragend', () => {
+      console.log('dragend')
+
+      if (this.animalsOnBase.has(animalDragged)) {
+        this.sound.play('collect')
       }
 
-      this.input.on('dragend', () => {
-        if (animalsOnBase.has(gameObject.name)) {
-          this.sound.play('collect')
+      if (this.animalsOnBase.size === animalObjects.length) {
+        if (!this.label) {
+          this.addCongratulationsText(scaleSize)
         }
-
-        if (animalsOnBase.size === animalObjects.length) {
-          if (!this.label) {
-            this.addCongratulationsText(scaleSize)
-          }
-        } else {
-          if (this.label) {
-            this.label.destroy()
-            this.tweens.killTweensOf(this.label)
-            this.label = null
-          }
+      } else {
+        if (this.label) {
+          this.label.destroy()
+          this.tweens.killTweensOf(this.label)
+          this.label = null
         }
-      })
+      }
     })
   }
 
   isAnimalOnBase(animalKey) {
-    // console.log('isAnimalOnBase', animalKey)
+    console.log('isAnimalOnBase', animalKey)
     const scaleSizeShadowOnBase = Math.min(this.sWidth, this.sHeight) * 0.00073 // Scale size proportional to screen dimensions
     const scaleSizeShadow = Math.min(this.sWidth, this.sHeight) * 0.00071 // Scale size proportional to screen dimensions
     const isOnBase =

@@ -15,6 +15,7 @@ export class MainMenu extends Scene {
   }
 
   create() {
+    this.changeScene('GameA')
     // Create title text
     this.add.text(this.sWidth / 2, this.sHeight / 4, 'Main Menu', {
       fontSize: `${this.fontSize * 1.5}px`,
