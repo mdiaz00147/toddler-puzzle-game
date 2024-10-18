@@ -64,7 +64,7 @@ export class GameA extends Scene {
 
   addAnimalLabel(animal) {
     const x = this.sWidth / 2
-    const y = this.sHeight * 0.9
+    const y = this.sHeight * 0.8
     // console.log('addAnimalLabel', animal)
     this.resetAnimalLabel()
 
@@ -99,7 +99,7 @@ export class GameA extends Scene {
     // this.animalLabelObj.setBackgroundColor('#eb7259')
     // this.animalLabelObj.setFixedSize( x, y)
     this.animalLabelObj.setStroke('#000', 10)
-    this.animalLabelObj.setShadow(15, 50, '#000000', 15, true, true)
+    this.animalLabelObj.setShadow(15, 18, '#000000', 15, true, true)
 
     let index = 0
 
@@ -119,11 +119,18 @@ export class GameA extends Scene {
 
   create() {
     console.log('create')
+
+    // Ensure audio context is resumed on user interaction for iOS Safari
+    this.input.on('pointerdown', () => {
+      if (this.sound.context.state === 'suspended') {
+        this.sound.context.resume()
+      }
+    })
     this.start()
     this.addBirds()
     this.addClouds()
     // this.addCongratulationsText()
-    // this.addAnimalLabel('test')
+    this.addAnimalLabel('test')
     WebFont.load({
       google: {
         families: ['Bruno Ace SC']
