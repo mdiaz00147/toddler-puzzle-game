@@ -3,6 +3,7 @@ import { Scene } from 'phaser'
 
 const NUM_OF_CLOUDS = 10
 const NUM_OF_BIRDS = 2
+const NUM_OF_ANIMALS = 9
 
 export class GameA extends Scene {
   constructor() {
@@ -125,7 +126,6 @@ export class GameA extends Scene {
 
   start() {
     console.log('start')
-
     const availableAnimals = [
       'elephant',
       'giraffe',
@@ -138,10 +138,16 @@ export class GameA extends Scene {
       'rabbit',
       'snake'
     ]
-    const shuffledAnimals = availableAnimals.sort(() => Math.random() - 0.5).slice(0, 9)
-    const [animalAKey, animalBKey, animalCKey] = shuffledAnimals
+    const shuffledAnimals = availableAnimals
+      .sort(() => Math.random() - 0.5)
+      .slice(0, NUM_OF_ANIMALS)
 
-    this.animalsNames = { animalA: animalAKey, animalB: animalBKey, animalC: animalCKey }
+    for (let index = 0; index < shuffledAnimals.length; index++) {
+      const animalKey = shuffledAnimals[index]
+      const animalName = `animal${String.fromCharCode(65 + index)}`
+
+      this.animalsNames[animalName] = animalKey
+    }
 
     this.addAnimalsShadow(shuffledAnimals)
     this.addAnimals(shuffledAnimals)
@@ -285,7 +291,7 @@ export class GameA extends Scene {
       )
 
       this.animals.add(animal)
-      console.log('addAnimals', `animal${String.fromCharCode(65 + index)}`)
+      // console.log('addAnimals', `animal${String.fromCharCode(65 + index)}`)
       this[`animal${String.fromCharCode(65 + index)}`] = animal
 
       return animal
@@ -294,7 +300,6 @@ export class GameA extends Scene {
     const animalObjects = animals.map(createAnimal)
 
     this.input.setDraggable(animalObjects)
-
     this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
       dragX = Phaser.Math.Clamp(
         dragX,
@@ -310,21 +315,16 @@ export class GameA extends Scene {
       gameObject.x = dragX
       gameObject.y = dragY
 
-      let allAnimalsOnBase = true
-      // console.log("animalObjects", animalObjects)
-      for (let index = 0; index < animals.length; index++) {
-        const element = animals[index]
-        // const animal = `animal${String.fromCharCode(65 + index)}`;
-        // console.log("drag", animals)
-        this.isAnimalOnBase(element)
-        // if (!this.isAnimalOnBase(animal)) {
-        //   allAnimalsOnBase = false;
-        //   break;
-        // }
+      let onBaseCount = 0
+      for (let index = 0; index < animalObjects.length; index++) {
+        const animalKey = `animal${String.fromCharCode(65 + index)}`
+        const isOnBase = this.isAnimalOnBase(animalKey)
+
+        if (isOnBase) onBaseCount++
       }
 
       this.input.on('dragend', () => {
-        if (allAnimalsOnBase) {
+        if (onBaseCount === animalObjects.length) {
           if (!this.label) {
             this.addCongratulationsText(scaleSize)
           }
@@ -339,29 +339,29 @@ export class GameA extends Scene {
     })
   }
 
-  isAnimalOnBase(animal) {
-    console.log("isAnimalOnBase", animal)
+  isAnimalOnBase(animalKey) {
+    // console.log('isAnimalOnBase', animalKey)
     const scaleSizeShadowOnBase = Math.min(this.sWidth, this.sHeight) * 0.00073 // Scale size proportional to screen dimensions
     const scaleSizeShadow = Math.min(this.sWidth, this.sHeight) * 0.00071 // Scale size proportional to screen dimensions
     const isOnBase =
-      Math.abs(this[animal].x - this.baseShades[animal].x) < 10 &&
-      Math.abs(this[animal].y - this.baseShades[animal].y) < 10
+      Math.abs(this[animalKey].x - this.baseShades[animalKey].x) < 10 &&
+      Math.abs(this[animalKey].y - this.baseShades[animalKey].y) < 10
 
     if (isOnBase) {
-      this[`${animal}Shadow`].setTint(0x00ff00)
-      this[`${animal}Shadow`].setTintFill(0x00ff00)
-      this[`${animal}Shadow`].setAlpha(1)
-      this[`${animal}Shadow`].setScale(scaleSizeShadowOnBase)
+      this[`${animalKey}Shadow`].setTint(0x00ff00)
+      this[`${animalKey}Shadow`].setTintFill(0x00ff00)
+      this[`${animalKey}Shadow`].setAlpha(1)
+      this[`${animalKey}Shadow`].setScale(scaleSizeShadowOnBase)
 
-      this.addAnimalLabel(this.animalsNames[animal])
+      this.addAnimalLabel(this.animalsNames[animalKey])
 
-      this.animalsOnBase.add(this.animalsNames[animal])
+      this.animalsOnBase.add(this.animalsNames[animalKey])
     } else {
-      this[`${animal}Shadow`].setTint(0x000)
-      this[`${animal}Shadow`].setAlpha(0.7)
-      this[`${animal}Shadow`].setScale(scaleSizeShadow)
+      this[`${animalKey}Shadow`].setTint(0x000)
+      this[`${animalKey}Shadow`].setAlpha(0.7)
+      this[`${animalKey}Shadow`].setScale(scaleSizeShadow)
 
-      this.animalsOnBase.delete(this.animalsNames[animal])
+      this.animalsOnBase.delete(this.animalsNames[animalKey])
     }
 
     return isOnBase
