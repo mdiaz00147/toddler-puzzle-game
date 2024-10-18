@@ -14,6 +14,7 @@ export class GameA extends Scene {
     this.clouds = null
     this.animals = null
     this.birds = null
+    this.baseShades = {}
     this.animalsNames = {}
     this.animalsShadows = null
     this.animalLabelObj = null
@@ -26,16 +27,16 @@ export class GameA extends Scene {
     this.sWidth = this.cameras.main.width
     this.sHeight = this.cameras.main.height
     this.fontSize = Math.min(this.sWidth, this.sHeight) * 0.04 // Font size proportional to screen dimensions
-    this.baseShades = {
-      animalA: { x: this.sWidth / 6, y: this.sHeight * 0.2 },
-      animalB: { x: this.sWidth / 2, y: this.sHeight * 0.2 },
-      animalC: { x: (this.sWidth / 6) * 5, y: this.sHeight * 0.2 },
-      animalD: { x: this.sWidth / 6, y: this.sHeight * 0.4 },
-      animalE: { x: this.sWidth / 2, y: this.sHeight * 0.4 },
-      animalF: { x: (this.sWidth / 6) * 5, y: this.sHeight * 0.4 },
-      animalG: { x: this.sWidth / 6, y: this.sHeight * 0.6 },
-      animalH: { x: this.sWidth / 2, y: this.sHeight * 0.6 },
-      animalI: { x: (this.sWidth / 6) * 5, y: this.sHeight * 0.6 }
+
+    for (let i = 0; i < NUM_OF_ANIMALS; i++) {
+      const row = Math.floor(i / 3)
+      const col = i % 3
+      const animalKey = `animal${String.fromCharCode(65 + i)}`
+
+      this.baseShades[animalKey] = {
+        x: (this.sWidth / 6) * (col * 2 + 1),
+        y: this.sHeight * 0.2 * (row + 1)
+      }
     }
 
     const brickBase = this.add
@@ -72,7 +73,7 @@ export class GameA extends Scene {
     }
 
     const x = this.sWidth / 2
-    const y = this.sHeight * 0.6
+    const y = this.sHeight * 0.8
 
     const textConfig = {
       fontFamily: 'Bruno Ace SC',
@@ -105,9 +106,7 @@ export class GameA extends Scene {
     this.start()
     this.addBirds()
     this.addClouds()
-
     // this.addCongratulationsText()
-
     WebFont.load({
       google: {
         families: ['Bruno Ace SC']
