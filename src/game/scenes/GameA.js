@@ -123,7 +123,7 @@ export class GameA extends Scene {
     this.addBirds()
     this.addClouds()
     // this.addCongratulationsText()
-    this.addAnimalLabel('test')
+    // this.addAnimalLabel('test')
     WebFont.load({
       google: {
         families: ['Bruno Ace SC']
