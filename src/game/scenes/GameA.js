@@ -63,17 +63,10 @@ export class GameA extends Scene {
   }
 
   addAnimalLabel(animal) {
-    // console.log('addAnimalLabel', this.animalsOnBase)
-    if (this.animalsOnBase.has(animal)) {
-      return
-    }
-
-    if (this.animalLabelObj) {
-      this.animalLabelObj.text = ''
-    }
-
     const x = this.sWidth / 2
-    const y = this.sHeight * 0.8
+    const y = this.sHeight * 0.9
+    // console.log('addAnimalLabel', animal)
+    this.resetAnimalLabel()
 
     const textConfig = {
       fontFamily: 'Bruno Ace SC',
@@ -81,9 +74,32 @@ export class GameA extends Scene {
       color: '#ffffff'
     }
 
-    this.animalLabelObj = this.add.text(0, y, animal, textConfig)
+    // this.labelBackground = this.add.graphics()
+
+    this.animalLabelObj = this.add.text(x, y, animal, textConfig)
+    this.animalLabelObj.setPadding(20)
     this.animalLabelObj.x = x - this.animalLabelObj.displayWidth / 2
+
+    // this.labelBackground.fillStyle(0xeb7259, 1)
+    // this.labelBackground.fillRect(
+    //   x - this.animalLabelObj.displayWidth / 2 - 20,
+    //   y + 20,
+    //   this.animalLabelObj.displayWidth + 40,
+    //   100 + 40
+    // )
+    // this.labelBackground.lineStyle(3, 0x000000, 1)
+    // this.labelBackground.strokeRect(
+    //   x - this.animalLabelObj.displayWidth / 2 - 20,
+    //   y + 20,
+    //   this.animalLabelObj.displayWidth + 40,
+    //   100 + 40
+    // )
+
     this.animalLabelObj.text = ''
+    // this.animalLabelObj.setBackgroundColor('#eb7259')
+    // this.animalLabelObj.setFixedSize( x, y)
+    this.animalLabelObj.setStroke('#000', 10)
+    this.animalLabelObj.setShadow(15, 50, '#000000', 15, true, true)
 
     let index = 0
 
@@ -107,6 +123,7 @@ export class GameA extends Scene {
     this.addBirds()
     this.addClouds()
     // this.addCongratulationsText()
+    this.addAnimalLabel('test')
     WebFont.load({
       google: {
         families: ['Bruno Ace SC']
@@ -328,7 +345,11 @@ export class GameA extends Scene {
       console.log('dragend')
 
       if (this.animalsOnBase.has(animalDragged)) {
+        this.addAnimalLabel(animalDragged)
+
         this.sound.play('collect')
+      } else {
+        this.resetAnimalLabel()
       }
 
       if (this.animalsOnBase.size === animalObjects.length) {
@@ -346,7 +367,7 @@ export class GameA extends Scene {
   }
 
   isAnimalOnBase(animalKey) {
-    console.log('isAnimalOnBase', animalKey)
+    // console.log('isAnimalOnBase', animalKey)
     const scaleSizeShadowOnBase = Math.min(this.sWidth, this.sHeight) * 0.00073 // Scale size proportional to screen dimensions
     const scaleSizeShadow = Math.min(this.sWidth, this.sHeight) * 0.00071 // Scale size proportional to screen dimensions
     const isOnBase =
@@ -359,8 +380,6 @@ export class GameA extends Scene {
       this[`${animalKey}Shadow`].setAlpha(1)
       this[`${animalKey}Shadow`].setScale(scaleSizeShadowOnBase)
 
-      this.addAnimalLabel(this.animalsNames[animalKey])
-
       this.animalsOnBase.add(this.animalsNames[animalKey])
     } else {
       this[`${animalKey}Shadow`].setTint(0x000)
@@ -371,25 +390,6 @@ export class GameA extends Scene {
     }
 
     return isOnBase
-  }
-
-  resetAnimals() {
-    this.animals.clear(true, true)
-    this.animalsShadows.clear(true, true)
-
-    this.start()
-  }
-
-  resetClouds() {
-    this.clouds.clear(true, true)
-
-    this.addClouds()
-  }
-
-  resetBirds() {
-    this.birds.clear(true, true)
-
-    this.addBirds()
   }
 
   addCongratulationsText(scaleSize) {
@@ -421,13 +421,43 @@ export class GameA extends Scene {
         this.scoreBoard.text = `SCORE: ${this.score}`
         this.label.destroy()
         this.label = null
-        this.animalLabelObj.text = ''
+        this.input.removeAllListeners()
 
         this.resetAnimals(scaleSize)
         this.resetClouds()
         this.resetBirds()
+        this.resetAnimalLabel()
       }
     })
+  }
+
+  resetAnimalLabel() {
+    if (this.animalLabelObj) {
+      this.time.removeAllEvents()
+      this.animalLabelObj.text = ''
+
+      // this.labelBackground.destroy()
+    }
+  }
+
+  resetAnimals() {
+    this.animals.clear(true, true)
+    this.animalsShadows.clear(true, true)
+    this.animalsOnBase.clear()
+
+    this.start()
+  }
+
+  resetClouds() {
+    this.clouds.clear(true, true)
+
+    this.addClouds()
+  }
+
+  resetBirds() {
+    this.birds.clear(true, true)
+
+    this.addBirds()
   }
 
   changeScene() {
