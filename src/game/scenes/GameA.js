@@ -267,13 +267,20 @@ export class GameA extends Scene {
       this[`animal${String.fromCharCode(65 + index)}Shadow`] = animalShadow
     }
   }
+
   addAnimals(animals) {
     this.animals = this.add.group()
 
     const scaleSize = Math.min(this.sWidth, this.sHeight) * 0.0007 // Scale size proportional to screen dimensions
 
-    const createAnimal = (key, index) => {
-      const animal = this.add.image(0, 0, key).setScale(scaleSize).setInteractive().setDepth(2)
+    const createAnimal = (animalName, index) => {
+      const key = `animal${String.fromCharCode(65 + index)}`
+      const animal = this.add
+        .image(0, 0, animalName)
+        .setScale(scaleSize)
+        .setInteractive()
+        .setDepth(2)
+        .setName(key)
       animal.x = Phaser.Math.Clamp(
         Math.random() * this.sWidth,
         animal.displayWidth / 2,
@@ -287,15 +294,17 @@ export class GameA extends Scene {
 
       this.animals.add(animal)
       // console.log('addAnimals', `animal${String.fromCharCode(65 + index)}`)
-      this[`animal${String.fromCharCode(65 + index)}`] = animal
+      this[key] = animal
 
       return animal
     }
 
     const animalObjects = animals.map(createAnimal)
+    const animalsOnBase = new Set()
 
     this.input.setDraggable(animalObjects)
     this.input.on('drag', (pointer, gameObject, dragX, dragY) => {
+      // console.log('gameObject', gameObject.name)
       dragX = Phaser.Math.Clamp(
         dragX,
         gameObject.displayWidth / 2,
@@ -310,16 +319,18 @@ export class GameA extends Scene {
       gameObject.x = dragX
       gameObject.y = dragY
 
-      let onBaseCount = 0
       for (let index = 0; index < animalObjects.length; index++) {
-        const animalKey = `animal${String.fromCharCode(65 + index)}`
-        const isOnBase = this.isAnimalOnBase(animalKey)
+        const isOnBase = this.isAnimalOnBase(gameObject.name)
 
-        if (isOnBase) onBaseCount++
+        if (isOnBase) animalsOnBase.add(gameObject.name)
       }
 
       this.input.on('dragend', () => {
-        if (onBaseCount === animalObjects.length) {
+        if (animalsOnBase.has(gameObject.name)) {
+          this.sound.play('collect')
+        }
+
+        if (animalsOnBase.size === animalObjects.length) {
           if (!this.label) {
             this.addCongratulationsText(scaleSize)
           }
