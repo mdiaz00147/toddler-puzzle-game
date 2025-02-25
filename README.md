@@ -1,6 +1,6 @@
 # 🧩 Toddler Puzzle Game  
 
-A fun and engaging puzzle game designed to **stimulate toddlers' spatial awareness, motor skills, and cognitive development**.  
+A fun and engaging puzzle game designed to **stimulate toddlers spatial awareness, motor skills, and cognitive development**.  
 
 As a **father**, I was inspired to create this game to provide an **interactive and educational experience** that encourages **hand-eye coordination, problem-solving, and shape recognition** in a playful way.  
 
@@ -20,3 +20,26 @@ To run the game locally, follow these steps:
    ```sh
    git clone https://github.com/mdiaz00147/toddler-puzzle-game.git
    cd toddler-puzzle-game
+2. Install dependencies:
+     ```sh
+       npm install
+
+3. Install dependencies:
+     ```sh
+       npm run dev
+
+4. Open the game in your browser at http://localhost:5173/
+
+## 📌 Features
+    ✔️ Drag-and-drop puzzle mechanics
+    ✔️ Bright, engaging visuals for toddlers
+    ✔️ Easy-to-use interface for young children
+    ✔️ Encourages motor skills and problem-solving
+
+## 🎯 Future Improvements
+    🔹 More puzzle variations
+    🔹 Sound effects and background music
+    🔹 Progress tracking for parents
+
+## 📢 Contributions & Feedback
+Feel free to contribute or share feedback! This project is a labor of love for parents and toddlers alike.
