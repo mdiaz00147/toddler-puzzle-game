@@ -150,16 +150,26 @@ export class GameA extends Scene {
   start() {
     console.log('start')
     const availableAnimals = [
-      'elephant',
-      'giraffe',
-      'hippo',
-      'monkey',
-      'panda',
-      'parrot',
-      'penguin',
-      'pig',
-      'rabbit',
-      'snake'
+      'asset_a',
+      'asset_b',
+      'asset_c',
+      'asset_d',
+      'asset_e',
+      'asset_f',
+      'asset_g',
+      'asset_h',
+      'asset_i'
+
+
+      // 'giraffe',
+      // 'hippo',
+      // 'monkey',
+      // 'panda',
+      // 'parrot',
+      // 'penguin',
+      // 'pig',
+      // 'rabbit',
+      // 'snake'
     ]
     const shuffledAnimals = availableAnimals
       .sort(() => Math.random() - 0.5)
