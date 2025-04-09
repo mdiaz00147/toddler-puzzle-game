@@ -39,27 +39,35 @@ export class GameA extends Scene {
       }
     }
 
-    const brickBase = this.add
-      .image(0, this.sHeight, 'brick')
-      .setScale(0.1)
-      .setOrigin(0, 1)
-      .setDepth(0)
-    const brickWidth = brickBase.width * brickBase.scaleX
-    const brickHeight = brickBase.height * brickBase.scaleY
-    const numBricks = Math.ceil(this.sWidth / brickWidth)
-    const numRows = 4
+    // const brickBase = this.add
+    //   .image(0, this.sHeight, 'brick')
+    //   .setScale(0.1)
+    //   .setOrigin(0, 1)
+    //   .setDepth(0)
+    // const brickWidth = brickBase.width * brickBase.scaleX
+    // const brickHeight = brickBase.height * brickBase.scaleY
+    // const numBricks = Math.ceil(this.sWidth / brickWidth)
+    // const numRows = 4
 
-    for (let level = 0; level < numRows; level++) {
-      const offsetX = level % 2 === 0 ? 0 : brickWidth / 2 // Offset every other row
+    // for (let level = 0; level < numRows; level++) {
+    //   const offsetX = level % 2 === 0 ? 0 : brickWidth / 2 // Offset every other row
 
-      for (let i = -1; i < numBricks; i++) {
-        this.add
-          .image(i * brickWidth + offsetX, this.sHeight - level * brickHeight, 'brick')
-          .setScale(0.1)
-          .setOrigin(0, 1)
-          .setDepth(0)
-      }
-    }
+    //   for (let i = -1; i < numBricks; i++) {
+    //     this.add
+    //       .image(i * brickWidth + offsetX, this.sHeight - level * brickHeight, 'brick')
+    //       .setScale(0.1)
+    //       .setOrigin(0, 1)
+    //       .setDepth(0)
+    //   }
+    // }
+
+    const bgImage = this.add.image(this.sWidth / 2, this.sHeight / 2, 'background_a')
+      .setOrigin(0.5)
+      .setDisplaySize(this.sWidth, this.sHeight);
+
+    // Adjust the image scale to maintain aspect ratio based on device height
+    // const scaleFactor = this.sHeight / bgImage.height;
+    // bgImage.setScale(1);
   }
 
   addAnimalLabel(animal) {
