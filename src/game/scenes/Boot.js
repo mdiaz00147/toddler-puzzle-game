@@ -8,10 +8,12 @@ export class Boot extends Scene {
   preload() {
     //  The Boot Scene is typically used to load in any assets you require for your Preloader, such as a game logo or background.
     //  The smaller the file size of the assets, the better, as the Boot Scene itself has no preloader.
+    this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
 
     this.load.image('background_a', 'assets/backgrounds/A.png')
     this.load.image('background_b', 'assets/backgrounds/B.png')
     this.load.image('background_c', 'assets/backgrounds/C.png')
+    this.load.image('background_d', 'assets/backgrounds/D.png')
 
     const assetName = 'G.png'
     const frameSize = 310
@@ -83,6 +85,12 @@ export class Boot extends Scene {
   }
 
   create() {
+    WebFont.load({
+      google: {
+        families: ['Bruno Ace SC', 'Fredoka']
+      }
+    })
+
     this.scene.start('Preloader')
   }
 }

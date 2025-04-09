@@ -23,7 +23,7 @@ export class GameA extends Scene {
   }
 
   preload() {
-    this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
+    // this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
     this.sWidth = this.cameras.main.width
     this.sHeight = this.cameras.main.height
     this.fontSize = Math.min(this.sWidth, this.sHeight) * 0.04 // Font size proportional to screen dimensions
@@ -139,20 +139,20 @@ export class GameA extends Scene {
     this.addClouds()
     // this.addCongratulationsText()
     this.addAnimalLabel('test')
-    WebFont.load({
-      google: {
-        families: ['Bruno Ace SC']
-      },
-      active: () => {
-        this.scoreBoard = this.add
-          .text(16, 16, `SCORE: 0`, {
-            fontFamily: 'Bruno Ace SC',
-            fontSize: '30px',
-            fill: '#000000' // Same yellow color as the congratulations text
-          })
-          .setDepth(3)
-      }
-    })
+    // WebFont.load({
+    //   google: {
+    //     families: ['Bruno Ace SC']
+    //   },
+    //   active: () => {
+    //     this.scoreBoard = this.add
+    //       .text(16, 16, `SCORE: 0`, {
+    //         fontFamily: 'Bruno Ace SC',
+    //         fontSize: '30px',
+    //         fill: '#000000' // Same yellow color as the congratulations text
+    //       })
+    //       .setDepth(3)
+    //   }
+    // })
   }
 
   start() {
