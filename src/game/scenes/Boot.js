@@ -11,7 +11,7 @@ export class Boot extends Scene {
 
     this.load.image('background', 'assets/bg.png')
 
-    const assetName = 'E.png'
+    const assetName = 'G.png'
     const frameSize = 310
 
     // emojis
@@ -20,12 +20,11 @@ export class Boot extends Scene {
     })
     this.load.spritesheet('asset_b', `assets/emojis-pack/${assetName}`, {
       frameWidth: frameSize,
-
       startFrame: 1
     })
     this.load.spritesheet('asset_c', `assets/emojis-pack/${assetName}`, {
       frameWidth: frameSize,
-      startFrame: 2 // Starts at the third emoji in the spritesheet
+      startFrame: 2
     })
     this.load.spritesheet('asset_d', `assets/emojis-pack/${assetName}`, {
       frameWidth: frameSize,
