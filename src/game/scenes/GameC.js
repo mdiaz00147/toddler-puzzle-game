@@ -234,7 +234,7 @@ export class GameC extends Scene {
       console.log('dragend')
 
       if (this.animalsOnBase.has(animalDragged)) {
-        this.addAnimalLabel(animalDragged)
+        // this.addAnimalLabel(animalDragged)
 
         this.sound.play('collect')
         this.score++
