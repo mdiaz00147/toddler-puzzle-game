@@ -23,7 +23,6 @@ export class GameA extends Scene {
   }
 
   preload() {
-    // this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
     this.sWidth = this.cameras.main.width
     this.sHeight = this.cameras.main.height
     this.fontSize = Math.min(this.sWidth, this.sHeight) * 0.04 // Font size proportional to screen dimensions
@@ -39,41 +38,16 @@ export class GameA extends Scene {
       }
     }
 
-    // const brickBase = this.add
-    //   .image(0, this.sHeight, 'brick')
-    //   .setScale(0.1)
-    //   .setOrigin(0, 1)
-    //   .setDepth(0)
-    // const brickWidth = brickBase.width * brickBase.scaleX
-    // const brickHeight = brickBase.height * brickBase.scaleY
-    // const numBricks = Math.ceil(this.sWidth / brickWidth)
-    // const numRows = 4
-
-    // for (let level = 0; level < numRows; level++) {
-    //   const offsetX = level % 2 === 0 ? 0 : brickWidth / 2 // Offset every other row
-
-    //   for (let i = -1; i < numBricks; i++) {
-    //     this.add
-    //       .image(i * brickWidth + offsetX, this.sHeight - level * brickHeight, 'brick')
-    //       .setScale(0.1)
-    //       .setOrigin(0, 1)
-    //       .setDepth(0)
-    //   }
-    // }
-
-    const bgImage = this.add.image(this.sWidth / 2, this.sHeight / 2, 'background_a')
+    const bgImage = this.add
+      .image(this.sWidth / 2, this.sHeight / 2, 'background_a')
       .setOrigin(0.5)
-      .setDisplaySize(this.sWidth, this.sHeight);
-
-    // Adjust the image scale to maintain aspect ratio based on device height
-    // const scaleFactor = this.sHeight / bgImage.height;
-    // bgImage.setScale(1);
+      .setDisplaySize(this.sWidth, this.sHeight)
   }
 
   addAnimalLabel(animal) {
     const x = this.sWidth / 2
     const y = this.sHeight * 0.8
-    // console.log('addAnimalLabel', animal)
+
     this.resetAnimalLabel()
 
     const textConfig = {
@@ -87,25 +61,7 @@ export class GameA extends Scene {
     this.animalLabelObj = this.add.text(x, y, animal, textConfig)
     this.animalLabelObj.setPadding(20)
     this.animalLabelObj.x = x - this.animalLabelObj.displayWidth / 2
-
-    // this.labelBackground.fillStyle(0xeb7259, 1)
-    // this.labelBackground.fillRect(
-    //   x - this.animalLabelObj.displayWidth / 2 - 20,
-    //   y + 20,
-    //   this.animalLabelObj.displayWidth + 40,
-    //   100 + 40
-    // )
-    // this.labelBackground.lineStyle(3, 0x000000, 1)
-    // this.labelBackground.strokeRect(
-    //   x - this.animalLabelObj.displayWidth / 2 - 20,
-    //   y + 20,
-    //   this.animalLabelObj.displayWidth + 40,
-    //   100 + 40
-    // )
-
     this.animalLabelObj.text = ''
-    // this.animalLabelObj.setBackgroundColor('#eb7259')
-    // this.animalLabelObj.setFixedSize( x, y)
     this.animalLabelObj.setStroke('#000', 10)
     this.animalLabelObj.setShadow(15, 18, '#000000', 15, true, true)
 
@@ -137,8 +93,7 @@ export class GameA extends Scene {
     this.start()
     this.addBirds()
     this.addClouds()
-    // this.addCongratulationsText()
-    // this.addAnimalLabel('test')
+
     // WebFont.load({
     //   google: {
     //     families: ['Bruno Ace SC']
@@ -153,6 +108,16 @@ export class GameA extends Scene {
     //       .setDepth(3)
     //   }
     // })
+
+    const backButton = this.add
+      .image(this.sWidth * 0.08, this.sHeight * 0.04, 'button_back')
+      .setInteractive()
+      .setScale(Math.min(this.sWidth, this.sHeight) * 0.0008)
+      .setDepth(5)
+
+    backButton.on('pointerdown', () => {
+      this.scene.start('MainMenu')
+    })
   }
 
   start() {
@@ -167,7 +132,6 @@ export class GameA extends Scene {
       'asset_g',
       'asset_h',
       'asset_i'
-
 
       // 'giraffe',
       // 'hippo',
@@ -483,10 +447,6 @@ export class GameA extends Scene {
     this.birds.clear(true, true)
 
     this.addBirds()
-  }
-
-  changeScene() {
-    this.scene.start('GameOver')
   }
 }
 

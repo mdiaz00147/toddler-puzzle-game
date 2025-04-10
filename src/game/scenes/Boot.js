@@ -10,6 +10,10 @@ export class Boot extends Scene {
     //  The smaller the file size of the assets, the better, as the Boot Scene itself has no preloader.
     this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
 
+    // buttons
+    this.load.image('button_back', 'assets/buttons/back.png')
+
+    // backgrounds
     this.load.image('background_a', 'assets/backgrounds/A.png')
     this.load.image('background_b', 'assets/backgrounds/B.png')
     this.load.image('background_c', 'assets/backgrounds/C.png')
