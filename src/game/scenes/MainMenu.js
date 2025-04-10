@@ -17,7 +17,7 @@ export class MainMenu extends Scene {
   }
 
   create() {
-    // this.changeScene('GameA')
+    this.changeScene('GameA')
 
     const bgImage = this.add
       .image(this.sWidth / 2, this.sHeight / 2, 'background_d')
