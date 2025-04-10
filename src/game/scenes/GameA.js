@@ -333,7 +333,7 @@ export class GameA extends Scene {
 
       if (this.animalsOnBase.size === animalObjects.length) {
         if (!this.label) {
-          this.addCongratulationsText(scaleSize)
+          // this.addCongratulationsText(scaleSize)
         }
       } else {
         if (this.label) {
