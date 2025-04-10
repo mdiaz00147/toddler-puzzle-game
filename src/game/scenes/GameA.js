@@ -23,6 +23,8 @@ export class GameA extends Scene {
   }
 
   preload() {
+    console.log('preload')
+
     this.sWidth = this.cameras.main.width
     this.sHeight = this.cameras.main.height
     this.fontSize = Math.min(this.sWidth, this.sHeight) * 0.04 // Font size proportional to screen dimensions
@@ -94,23 +96,18 @@ export class GameA extends Scene {
     this.addBirds()
     this.addClouds()
 
-    // WebFont.load({
-    //   google: {
-    //     families: ['Bruno Ace SC']
-    //   },
-    //   active: () => {
-    //     this.scoreBoard = this.add
-    //       .text(16, 16, `SCORE: 0`, {
-    //         fontFamily: 'Bruno Ace SC',
-    //         fontSize: '30px',
-    //         fill: '#000000' // Same yellow color as the congratulations text
-    //       })
-    //       .setDepth(3)
-    //   }
-    // })
+    this.scoreBoard = this.add
+      .text(this.sWidth / 2, 35, `SCORE: 0`, {
+        fontFamily: 'Fredoka',
+        fontSize: '60px',
+        fill: '#51381e', // Same yellow color as the congratulations text
+        fontStyle: 'bolder' // Make the font bolder
+      })
+      .setOrigin(0.5, 0) // Center horizontally
+      .setDepth(3)
 
     const backButton = this.add
-      .image(this.sWidth * 0.08, this.sHeight * 0.04, 'button_back')
+      .image(70, 70, 'button_back')
       .setInteractive()
       .setScale(Math.min(this.sWidth, this.sHeight) * 0.0008)
       .setDepth(5)
@@ -132,16 +129,6 @@ export class GameA extends Scene {
       'asset_g',
       'asset_h',
       'asset_i'
-
-      // 'giraffe',
-      // 'hippo',
-      // 'monkey',
-      // 'panda',
-      // 'parrot',
-      // 'penguin',
-      // 'pig',
-      // 'rabbit',
-      // 'snake'
     ]
     const shuffledAnimals = availableAnimals
       .sort(() => Math.random() - 0.5)
@@ -252,7 +239,7 @@ export class GameA extends Scene {
 
   addAnimalsShadow(animals) {
     this.animalsShadows = this.add.group()
-    console.log('addAnimalsShadow', animals)
+    // console.log('addAnimalsShadow', animals)
     const scaleSizeShadow = Math.min(this.sWidth, this.sHeight) * 0.00071 // Scale size proportional to screen dimensions
 
     for (let index = 0; index < animals.length; index++) {
@@ -278,7 +265,6 @@ export class GameA extends Scene {
     this.animals = this.add.group()
 
     const scaleSize = Math.min(this.sWidth, this.sHeight) * 0.0007 // Scale size proportional to screen dimensions
-
     const createAnimal = (animalName, index) => {
       const key = `animal${String.fromCharCode(65 + index)}`
       const animal = this.add
@@ -337,6 +323,9 @@ export class GameA extends Scene {
         this.addAnimalLabel(animalDragged)
 
         this.sound.play('collect')
+        this.score++
+        this.scoreBoard.text = `SCORE: ${this.score}`
+
       } else {
         this.resetAnimalLabel()
       }
@@ -406,8 +395,8 @@ export class GameA extends Scene {
         this.label.setFontSize(`${this.fontSize * this.label.scaleX}px`)
       },
       onComplete: () => {
-        this.score++
-        this.scoreBoard.text = `SCORE: ${this.score}`
+        // this.score++
+        // this.scoreBoard.text = `SCORE: ${this.score}`
         this.label.destroy()
         this.label = null
         this.input.removeAllListeners()
@@ -416,6 +405,7 @@ export class GameA extends Scene {
         this.resetClouds()
         this.resetBirds()
         this.resetAnimalLabel()
+        // this.resetCounters()
       }
     })
   }
@@ -447,6 +437,11 @@ export class GameA extends Scene {
     this.birds.clear(true, true)
 
     this.addBirds()
+  }
+
+  resetCounters() {
+    this.score = 0
+    this.scoreBoard.text = `SCORE: ${this.score}`
   }
 }
 
