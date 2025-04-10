@@ -17,7 +17,7 @@ const config = {
   width: clientWidth,
   height: clientHeight,
   parent: 'game-container',
-  backgroundColor: '#028af8',
+  backgroundColor: '#b06923',
   scene: [Boot, MainMenu, GameA, GameB, GameC, GameOver],
   physics: {
     default: 'arcade',
