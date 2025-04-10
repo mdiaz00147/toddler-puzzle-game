@@ -72,6 +72,7 @@ export class Boot extends Scene {
     this.load.image('background_b', 'assets/backgrounds/B.png')
     this.load.image('background_c', 'assets/backgrounds/C.png')
     this.load.image('background_d', 'assets/backgrounds/D.png')
+    this.load.image('background_e', 'assets/backgrounds/E.png')
 
     // TOYS-CARTOON
     const animalCartoonPackName = 'animal_cartoon'

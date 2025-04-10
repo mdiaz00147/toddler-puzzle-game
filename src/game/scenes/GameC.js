@@ -42,7 +42,7 @@ export class GameC extends Scene {
     }
 
     const bgImage = this.add
-      .image(this.sWidth / 2, this.sHeight / 2, 'background_a')
+      .image(this.sWidth / 2, this.sHeight / 2, 'background_e')
       .setOrigin(0.5)
       .setDisplaySize(this.sWidth, this.sHeight)
   }
