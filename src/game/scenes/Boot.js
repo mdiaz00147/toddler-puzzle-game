@@ -19,71 +19,102 @@ export class Boot extends Scene {
     this.load.image('background_c', 'assets/backgrounds/C.png')
     this.load.image('background_d', 'assets/backgrounds/D.png')
 
-    const assetName = 'G.png'
-    const frameSize = 310
+    // toys-cartoon
+    const animalCartoonPackName = 'animal_cartoon'
+    const animalCartoonPath = 'A.png'
+    const animalCartoonWidth = 310
 
-    // emojis
-    this.load.spritesheet('asset_a', `assets/emojis-pack/${assetName}`, {
-      frameWidth: frameSize
+    this.load.spritesheet(`asset_${animalCartoonPackName}_a`, `assets/emojis-pack/${animalCartoonPath}`, {
+      frameWidth: animalCartoonWidth
     })
-    this.load.spritesheet('asset_b', `assets/emojis-pack/${assetName}`, {
-      frameWidth: frameSize,
+    this.load.spritesheet(`asset_${animalCartoonPackName}_b`, `assets/emojis-pack/${animalCartoonPath}`, {
+      frameWidth: animalCartoonWidth,
       startFrame: 1
     })
-    this.load.spritesheet('asset_c', `assets/emojis-pack/${assetName}`, {
-      frameWidth: frameSize,
+    this.load.spritesheet(`asset_${animalCartoonPackName}_c`, `assets/emojis-pack/${animalCartoonPath}`, {
+      frameWidth: animalCartoonWidth,
       startFrame: 2
     })
-    this.load.spritesheet('asset_d', `assets/emojis-pack/${assetName}`, {
-      frameWidth: frameSize,
+    this.load.spritesheet(`asset_${animalCartoonPackName}_d`, `assets/emojis-pack/${animalCartoonPath}`, {
+      frameWidth: animalCartoonWidth,
       startFrame: 3
     })
-    this.load.spritesheet('asset_e', `assets/emojis-pack/${assetName}`, {
-      frameWidth: frameSize,
+    this.load.spritesheet(`asset_${animalCartoonPackName}_e`, `assets/emojis-pack/${animalCartoonPath}`, {
+      frameWidth: animalCartoonWidth,
       startFrame: 4
     })
-    this.load.spritesheet('asset_f', `assets/emojis-pack/${assetName}`, {
-      frameWidth: frameSize,
+    this.load.spritesheet(`asset_${animalCartoonPackName}_f`, `assets/emojis-pack/${animalCartoonPath}`, {
+      frameWidth: animalCartoonWidth,
       startFrame: 5
     })
-    this.load.spritesheet('asset_g', `assets/emojis-pack/${assetName}`, {
-      frameWidth: frameSize,
+    this.load.spritesheet(`asset_${animalCartoonPackName}_g`, `assets/emojis-pack/${animalCartoonPath}`, {
+      frameWidth: animalCartoonWidth,
       startFrame: 6
     })
-    this.load.spritesheet('asset_h', `assets/emojis-pack/${assetName}`, {
-      frameWidth: frameSize,
+    this.load.spritesheet(`asset_${animalCartoonPackName}_h`, `assets/emojis-pack/${animalCartoonPath}`, {
+      frameWidth: animalCartoonWidth,
       startFrame: 7
     })
-    this.load.spritesheet('asset_i', `assets/emojis-pack/${assetName}`, {
-      frameWidth: frameSize,
+    this.load.spritesheet(`asset_${animalCartoonPackName}_i`, `assets/emojis-pack/${animalCartoonPath}`, {
+      frameWidth: animalCartoonWidth,
       startFrame: 8
     })
 
-    // animals
-    this.load.image('elephant', 'assets/animal-pack/PNG/Round (outline)/elephant.png')
-    this.load.image('giraffe', 'assets/animal-pack/PNG/Round (outline)/giraffe.png')
-    this.load.image('hippo', 'assets/animal-pack/PNG/Round (outline)/hippo.png')
-    this.load.image('monkey', 'assets/animal-pack/PNG/Round (outline)/monkey.png')
-    this.load.image('panda', 'assets/animal-pack/PNG/Round (outline)/panda.png')
-    this.load.image('parrot', 'assets/animal-pack/PNG/Round (outline)/parrot.png')
-    this.load.image('penguin', 'assets/animal-pack/PNG/Round (outline)/penguin.png')
-    this.load.image('pig', 'assets/animal-pack/PNG/Round (outline)/pig.png')
-    this.load.image('rabbit', 'assets/animal-pack/PNG/Round (outline)/rabbit.png')
-    this.load.image('snake', 'assets/animal-pack/PNG/Round (outline)/snake.png')
 
+    // mistic-lego
+    const misticLegoPackName = 'mistic_lego'
+    const misticLegoPath = 'B.png'
+    const misticLegoWidth = 310
+
+    this.load.spritesheet(`asset_${misticLegoPackName}_a`, `assets/emojis-pack/${misticLegoPath}`, {
+      frameWidth: misticLegoWidth
+    })
+    this.load.spritesheet(`asset_${misticLegoPackName}_b`, `assets/emojis-pack/${misticLegoPath}`, {
+      frameWidth: misticLegoWidth,
+      startFrame: 1
+    })
+    this.load.spritesheet(`asset_${misticLegoPackName}_c`, `assets/emojis-pack/${misticLegoPath}`, {
+      frameWidth: misticLegoWidth,
+      startFrame: 2
+    })
+    this.load.spritesheet(`asset_${misticLegoPackName}_d`, `assets/emojis-pack/${misticLegoPath}`, {
+      frameWidth: misticLegoWidth,
+      startFrame: 3
+    })
+    this.load.spritesheet(`asset_${misticLegoPackName}_e`, `assets/emojis-pack/${misticLegoPath}`, {
+      frameWidth: misticLegoWidth,
+      startFrame: 4
+    })
+    this.load.spritesheet(`asset_${misticLegoPackName}_f`, `assets/emojis-pack/${misticLegoPath}`, {
+      frameWidth: misticLegoWidth,
+      startFrame: 5
+    })
+    this.load.spritesheet(`asset_${misticLegoPackName}_g`, `assets/emojis-pack/${misticLegoPath}`, {
+      frameWidth: misticLegoWidth,
+      startFrame: 6
+    })
+    this.load.spritesheet(`asset_${misticLegoPackName}_h`, `assets/emojis-pack/${misticLegoPath}`, {
+      frameWidth: misticLegoWidth,
+      startFrame: 7
+    })
+    this.load.spritesheet(`asset_${misticLegoPackName}_i`, `assets/emojis-pack/${misticLegoPath}`, {
+      frameWidth: misticLegoWidth,
+      startFrame: 8
+    })
+
+    // elements
     this.load.image('cloud-b', 'assets/clouds/cloud-computing.png')
     this.load.image('cloud-c', 'assets/clouds/cloud.png')
-
     this.load.image('sky', 'assets/elements/sky.png')
     this.load.image('ground', 'assets/elements/platform.png')
     this.load.image('star', 'assets/elements/star.png')
     this.load.image('bomb', 'assets/elements/bomb.png')
     this.load.image('brick', 'assets/elements/brick.png')
-
     this.load.image('frameA', 'assets/crateboy/_ART/birds/spr_bird1_0.png')
     this.load.image('frameB', 'assets/crateboy/_ART/birds/spr_bird1_1.png')
     this.load.image('wall', 'assets/crateboy/_ART/Wall tiles/wall3.png')
 
+    // audio
     this.load.audio('collect', 'assets/crateboy/_AUDIO/collect.wav')
     this.load.audio('sfx_collect', 'assets/crateboy/_AUDIO/sfx_collect.wav')
   }

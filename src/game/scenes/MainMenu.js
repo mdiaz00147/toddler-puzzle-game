@@ -43,8 +43,8 @@ export class MainMenu extends Scene {
 
     // Create GameA button
     const gameAButton = this.add
-      .text(this.sWidth / 2, this.sHeight / 2, 'Play GameA', {
-        fontFamily: 'Bruno Ace SC',
+      .text(this.sWidth / 2, this.sHeight / 2, 'GAME A', {
+        fontFamily: 'Fredoka',
         fontSize: `${this.fontSize}px`,
         fill: '#ffffff'
       })
@@ -57,7 +57,8 @@ export class MainMenu extends Scene {
 
     // Create GameB button
     const gameBButton = this.add
-      .text(this.sWidth / 2, this.sHeight / 2 + this.fontSize * 2, 'Play GameB', {
+      .text(this.sWidth / 2, this.sHeight / 2 + this.fontSize * 2, 'GAME B', {
+        fontFamily: 'Fredoka',
         fontSize: `${this.fontSize}px`,
         fill: '#ffffff'
       })
