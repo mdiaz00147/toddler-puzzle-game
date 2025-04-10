@@ -1,10 +1,10 @@
 import { Boot } from './scenes/Boot'
 import { GameA } from './scenes/GameA'
 import { GameB } from './scenes/GameB'
+import { GameC } from './scenes/GameC'
 import { GameOver } from './scenes/GameOver'
 import { MainMenu } from './scenes/MainMenu'
 import Phaser from 'phaser'
-import { Preloader } from './scenes/Preloader'
 
 // Find out more information about the Game Config at:
 // https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -18,7 +18,7 @@ const config = {
   height: clientHeight,
   parent: 'game-container',
   backgroundColor: '#028af8',
-  scene: [Boot, Preloader, MainMenu, GameA, GameB, GameOver],
+  scene: [Boot, MainMenu, GameA, GameB, GameC, GameOver],
   physics: {
     default: 'arcade',
     arcade: {

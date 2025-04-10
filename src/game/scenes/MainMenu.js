@@ -9,8 +9,6 @@ export class MainMenu extends Scene {
   }
 
   preload() {
-    // this.load.script('webfont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js')
-
     this.sWidth = this.cameras.main.width
     this.sHeight = this.cameras.main.height
     this.fontSize = Math.min(this.sWidth, this.sHeight) * 0.08 // Font size proportional to screen dimensions
@@ -67,6 +65,20 @@ export class MainMenu extends Scene {
 
     gameBButton.on('pointerdown', () => {
       this.changeScene('GameB')
+    })
+
+    // Create GameC button
+    const gameCButton = this.add
+      .text(this.sWidth / 2, this.sHeight / 2 + this.fontSize * 4, 'GAME C', {
+        fontFamily: 'Fredoka',
+        fontSize: `${this.fontSize}px`,
+        fill: '#ffffff'
+      })
+      .setOrigin(0.5)
+      .setInteractive()
+
+    gameCButton.on('pointerdown', () => {
+      this.changeScene('GameC')
     })
   }
 
