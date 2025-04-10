@@ -246,6 +246,11 @@ export class GameC extends Scene {
       if (this.animalsOnBase.size === animalObjects.length) {
         if (!this.label) {
           // this.addCongratulationsText(scaleSize)
+          const nextScene = ['GameA', 'GameB', 'GameC'][Math.floor(Math.random() * 3)]
+
+          setTimeout(() => {
+            this.scene.start(nextScene)
+          }, 2000)
         }
       } else {
         if (this.label) {
