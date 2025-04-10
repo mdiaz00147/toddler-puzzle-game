@@ -94,8 +94,8 @@ export class GameA extends Scene {
       }
     })
     this.start()
-    this.addBirds()
-    this.addClouds()
+    // this.addBirds()
+    // this.addClouds()
 
     this.scoreBoard = this.add
       .text(this.sWidth / 2, 35, `SCORE: 0`, {
@@ -403,8 +403,8 @@ export class GameA extends Scene {
         this.input.removeAllListeners()
 
         this.resetAnimals(scaleSize)
-        this.resetClouds()
-        this.resetBirds()
+        // this.resetClouds()
+        // this.resetBirds()
         this.resetAnimalLabel()
         // this.resetCounters()
       }
