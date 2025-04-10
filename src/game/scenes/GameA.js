@@ -20,6 +20,7 @@ export class GameA extends Scene {
     this.animalLabelObj = null
     this.animalsOnBase = new Set()
     this.score = 0
+    this.packName = 'animal_cartoon'
   }
 
   preload() {
@@ -41,7 +42,7 @@ export class GameA extends Scene {
     }
 
     const bgImage = this.add
-      .image(this.sWidth / 2, this.sHeight / 2, 'background_a')
+      .image(this.sWidth / 2, this.sHeight / 2, 'background_b')
       .setOrigin(0.5)
       .setDisplaySize(this.sWidth, this.sHeight)
   }
@@ -120,15 +121,15 @@ export class GameA extends Scene {
   start() {
     console.log('start')
     const availableAnimals = [
-      'asset_a',
-      'asset_b',
-      'asset_c',
-      'asset_d',
-      'asset_e',
-      'asset_f',
-      'asset_g',
-      'asset_h',
-      'asset_i'
+      `asset_${this.packName}_a`,
+      `asset_${this.packName}_b`,
+      `asset_${this.packName}_c`,
+      `asset_${this.packName}_d`,
+      `asset_${this.packName}_e`,
+      `asset_${this.packName}_f`,
+      `asset_${this.packName}_g`,
+      `asset_${this.packName}_h`,
+      `asset_${this.packName}_i`
     ]
     const shuffledAnimals = availableAnimals
       .sort(() => Math.random() - 0.5)
