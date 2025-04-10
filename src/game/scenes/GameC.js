@@ -94,8 +94,6 @@ export class GameC extends Scene {
       }
     })
     this.start()
-    this.addBirds()
-    this.addClouds()
 
     this.scoreBoard = this.add
       .text(this.sWidth / 2, 35, `SCORE: 0`, {
@@ -150,91 +148,6 @@ export class GameC extends Scene {
     return {
       x: Math.floor(Math.random() * (this.sWidth - 100)),
       y: Math.floor(Math.random() * (this.sHeight - 150))
-    }
-  }
-
-  addBirds() {
-    this.birds = this.add.group()
-
-    this.anims.create({
-      key: 'bird',
-      frames: [{ key: 'frameA' }, { key: 'frameB' }],
-      frameRate: 3,
-      repeat: -1
-    })
-    for (let i = 0; i < NUM_OF_BIRDS; i++) {
-      const x = Math.random() * this.sWidth
-      const y = Math.random() * this.sHeight * 0.4
-      const mySprite = this.add.sprite(x, y, 'frameA').setScale(2.5).setDepth(1)
-
-      mySprite.play('bird', true)
-
-      let yValue = '-=500'
-      let xValue = '+=500'
-
-      this.tweens.add({
-        targets: mySprite,
-        x: xValue,
-        repeat: -1,
-        duration: 6000,
-        ease: 'Power1',
-        yoyo: true,
-        flipX: true
-      })
-
-      this.birds.add(mySprite)
-    }
-  }
-
-  addClouds() {
-    const cloudTypes = ['cloud-b', 'cloud-c']
-    const cloudScales = [
-      Math.min(this.sWidth, this.sHeight) * 0.00012,
-      Math.min(this.sWidth, this.sHeight) * 0.00016,
-      Math.min(this.sWidth, this.sHeight) * 0.0002
-    ]
-
-    this.clouds = this.add.group()
-
-    for (let i = 0; i < NUM_OF_CLOUDS; i++) {
-      let cloud
-      let isOverlapping
-
-      do {
-        isOverlapping = false
-
-        const x = Math.random() * this.sWidth
-        const y = Math.random() * this.sHeight * 0.4
-        const cloudType = cloudTypes[Math.floor(Math.random() * cloudTypes.length)]
-        const cloudScaleSize = cloudScales[Math.floor(Math.random() * cloudScales.length)]
-
-        cloud = this.add.image(x, y, cloudType)
-        cloud.setScale(cloudScaleSize)
-        cloud.setDepth(0)
-        cloud.setFlipX(Math.random() < 0.5) // Randomly flip the cloud on the x-axis
-
-        // Check for overlap with existing clouds
-        const existingClouds = this.clouds.getChildren()
-
-        for (let j = 0; j < existingClouds.length; j++) {
-          const existingCloud = existingClouds[j]
-
-          if (
-            Phaser.Geom.Intersects.RectangleToRectangle(
-              cloud.getBounds(),
-              existingCloud.getBounds()
-            )
-          ) {
-            isOverlapping = true
-
-            cloud.destroy()
-
-            break
-          }
-        }
-      } while (isOverlapping)
-
-      this.clouds.add(cloud)
     }
   }
 
@@ -326,7 +239,6 @@ export class GameC extends Scene {
         this.sound.play('collect')
         this.score++
         this.scoreBoard.text = `SCORE: ${this.score}`
-
       } else {
         this.resetAnimalLabel()
       }
@@ -403,8 +315,6 @@ export class GameC extends Scene {
         this.input.removeAllListeners()
 
         this.resetAnimals(scaleSize)
-        this.resetClouds()
-        this.resetBirds()
         this.resetAnimalLabel()
         // this.resetCounters()
       }
@@ -426,18 +336,6 @@ export class GameC extends Scene {
     this.animalsOnBase.clear()
 
     this.start()
-  }
-
-  resetClouds() {
-    this.clouds.clear(true, true)
-
-    this.addClouds()
-  }
-
-  resetBirds() {
-    this.birds.clear(true, true)
-
-    this.addBirds()
   }
 
   resetCounters() {
